@@ -1,0 +1,83 @@
+Here's a Latent Semantic Analysis project. 
+
+This code implements SVD (Singular Value Decomposition) to determine the similarity between words. 
+
+To understand SVD, check out: http://en.wikipedia.org/wiki/Singular_value_decomposition
+
+lsa.py uses TF-IDF scores and Wikipedia articles as the main tools for decomposition. Resulting vector 
+comparisons are done with a cosine angle similarity measure. 
+
+Wikipedia seems to be a useful tool in SVD-LSA because the words examined are already contained within a context,
+keeping important patterns from being left out from dimension reduction in the concept space. 
+Currently the code returns a clear distinction between obviously similar (i.e. George Bush and Dick Cheney) 
+and obviously different (i.e. Genghis Khan and Nickelodeon) words. However, the degree of detected similarity between 
+obviously similar words seem to vary from comparison to comparison. For example, George Bush and Dick Cheney are 
+detected as only 40 percent similar, while Barack and Michelle Obama has a similarity at about 65 percent.
+More tweaking has to be done.
+
+Text summarization was executed using this SVD-LSA method as well, with summary evaluation done through cosine angle 
+similarity measure. Essentially, the better the summary, the smaller the angle between the query's vector and the 
+summary's vector in the concept space. Summary seems to work pretty well, as seen below. In addition, as expected,
+summary's evaluation score (out of 100) increased dramatically from a one to two sentence summary.
+
+Check this out for more information: http://textmining.zcu.cz/publications/isim.pdf
+
+Type  $ python lsa.py to see examples of the code in action. (Or just look below).  
+
+
+Currently lsa.summarize and lsa.summarize_evaluation support both string input and url input. The url should just 
+have the text you want to simplify in it. The less extraneous text in the webpage, the better. It is best 
+if you input the direct link to a news article you want to summarize, for example. 
+
+To use: 
+>> import lsa
+>> lsa.summarize(query="my string") 
+>> lsa.summarize_evaluation(query="my string", summary="my summary")
+>> lsa.compare(query1, query2) 
+>> lsa.summarize(url="http://myurl.com/") 
+
+Dependencies: Numpy, Scipy, Matplotlib (for graphing).
+
+All-in-one python scientific computing package: https://github.com/fonnesbeck/ScipySuperpack
+
+
+-- TESTS OF SIMILARITY --
+
+Similarity between Facebook and Mark Zuckerberg: 0.458080054863
+Similarity between Dick Cheney and George Bush: 0.37107075803
+Similarity between Nickelodeon and Genghis Khan: 0.0364954778505
+Similarity between Grapes and Cars: 0.0600327943326
+Similarity between Brad Pitt and Angelina Jolie: 0.357673579464
+Similarity between Barack Obama and Michelle Obama: 0.654795576964
+
+
+ ---- TESTS OF SUMMARIZATION ---- 
+
+
+TEXT TO SUMMARIZE - PRINCIPAL COMPONENT ANALYSIS APPLIED TO FACE RECOGNITION:
+
+'Principal component analysis (PCA), based on information theory concepts, 
+seeks a computational model that best describes a face by extracting the most 
+relevant information contained in that face. The Eigenfaces approach is a PCA method, 
+in which a small set of characteristic pictures are used to describe the variation between face images. 
+The goal is to find the eigenvectors (eigenfaces) of the covariance matrix of the distribution, 
+spanned by training a set of face images. Later, every face image is represented by a linear combination 
+of these eigenvectors. Recognition is performed by projecting a new image onto the subspace spanned by the 
+eigenfaces and then classifying the face by comparing its position in the face space with the positions of known 
+individuals.'
+
+
+1 SENTENCE SUMMARY:
+The goal is to find the eigenvectors (eigenfaces) of the covariance matrix of the distribution, 
+spanned by training a set of face images'
+
+TEXT TO SUMMARIZE - I HAVE A DREAM SPEECH (http://www.huffingtonpost.com/2011/01/17/i-have-a-dream-speech-text_n_809993.html)
+ 
+4 SENTENCE SUMMARY:
+'There will be neither rest nor tranquility in America until the Negro is granted his citizenship rights.
+I have a dream that one day every valley shall be every hill and mountain shall be made the rough places will 
+be made and the crooked places will be made and the glory of the Lord shall be and all flesh shall see it together. 
+One hundred years the Negro is still languishing in the corners of American society and finds himself an exile in
+his own land. We cannot be satisfied as long as a Negro in Mississippi cannot vote and a Negro in New York believes 
+he has nothing for which to vote. But one hundred years the Negro still is not free'
+
